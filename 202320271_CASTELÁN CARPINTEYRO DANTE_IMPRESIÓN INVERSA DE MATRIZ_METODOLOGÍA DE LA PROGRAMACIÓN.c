@@ -1,5 +1,5 @@
 #include <stdio.h>
-
+// Impresión inversa de matriz
 int main(int argc, char *argv[]) {
 	int matriz[100][100], n;
 	
@@ -19,4 +19,3 @@ int main(int argc, char *argv[]) {
 	}
 	return 0;
 }
-
