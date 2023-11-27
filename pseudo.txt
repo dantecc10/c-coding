@@ -1,0 +1,219 @@
+//FUNCIONES DE VALIDACIÓN
+validarEdad(Entrada: Registro Equipo equipo Entrada: Entero fecha Salida: Booleano val )
+    Entero edad
+    Inicio
+    val <- Falso
+        edad = 2023 - fecha
+        Si ( equipo.categoria = "libre" AND edad >= 18 ) Entonces
+            val <- Verdadero
+            Retornar val
+        Sino
+        Si ( equipo.categoria = "junior" AND edad >= 13 AND edad <= 17 )
+            val <- Verdadero
+            Retornar val
+        FinSi
+        Retornar val
+    Fin
+
+validarCategoria( Salida: Entero val )
+    Inicio
+        Escribir("Escribe la categoria del equipo: \n 1. Libre 2. Junior")
+        Leer(opcion)
+            Según Sea (opcion)
+                Caso 1:
+                    Retornar 1
+                    opcion <- 0;
+                Caso 2:
+                    Retornar 2
+                    opcion <- 0;
+            Fin Según
+    Fin
+
+validarEquipo(Entrada: Cadena nombre Entrada: Entero lim Entrada: Registro Equipo equipo[], Salida: Booleano val )
+    Inicio
+    val <- Verdadero
+    Para i <- 0 Hasta lim Incrementar 1 Hacer
+        Si ( nombre = equipo[i].nombre ) Entonces
+            val <- Falso
+            Retornar val
+        FinSi
+    FinPara
+    Retornar val
+    Fin
+
+validarNum(Entrada: Entero num Entrada: Registro Equipo equipo, Salida: Booleano val )
+    Inicio
+    val <- Verdadero
+    Para i <- 0 Hasta equipo.numJugadores Incrementar 1 Hacer
+        Si ( num = equipo.jugadores[i] ) Entonces
+            val <- Falso
+            Retornar val
+        FinSi
+    FinPara
+    Retornar val
+    Fin
+
+// FUNCIONES DE REGISTRO
+
+registrarEquipo(Entrada\Salida: Entero pos Entrada\Salida: Registro Equipo equipo[])
+    Cadena nombre[30]
+    Booleano val
+    Inicio
+    val <- Falso
+        Mientras val = Falso Hacer
+            Escribir("Escribe el nombre del equipo")
+            Leer(nombre)
+            val <- validarEquipo(nombre, pos, equipo[])
+            Si ( val = Falso ) Entonces
+                Escribir("Elige otro nombre para  tu equipo")
+            FinSi
+        FinMientras
+        equipo[pos].nombre <- nombre
+        pos <- pos + 1
+    Fin
+
+registrarJugador(Entrada\Salida: Registro Equipo equipo)
+    Entero pos, num, año
+    Registro
+    Booleano val, val2
+    Inicio
+    val2 <- Falso, val <- Falso
+    pos <- equipo.numJugadores
+    Si ( pos <= 9 ) Entonces
+        Escribir("Escribe el nombre del jugador: \n nombre, apellido materno y apellido paterno")
+        Leer(equipo.jugadores[pos].nombre)
+        Mientras val = Falso OR val2 = Falso Hacer
+            Escribir("Escribe el número del jugador: ")
+            Leer(num)
+            val <- validarNum(num, equipo)
+            Si ( val = Falso ) Entonces
+                Escribir("Ese número ya esta ocupado")
+            FinSi
+
+            Escribir("Escribe la fecha de nacimiento del jugador: \n Año")
+            Leer(año)
+            val2 <- validarEdad(equipo, año)
+            Si ( val2 = Falso ) Entonces
+                Escribir("La categoria no admite esas edades")
+            FinSi
+        FinMientras
+        equipo.jugadores[pos].numeroJugador <- num
+        equipo.jugadores[pos].fecha.año <- año
+        Escribir("Escribe la fecha de nacimiento del jugador: \n Dia")
+        Leer(equipo.jugadores[pos].fecha.dia)
+        Escribir("Escribe la fecha de nacimiento del jugador: \n Mes")
+        Leer(equipo.jugadores[pos].fecha.mes)
+
+        equipo.numJugadores <- pos + 1
+    Sino
+        Escribir("Se ha alcanzado el limite de jugadores")
+    FinSi
+    Fin 
+ 
+ //INICIO DEL ALGORITMO
+
+Algoritmo 
+
+Registro FechaNacimiento =
+    Entero dia, mes, año
+FinRegistro
+
+Registro Jugador =
+    Cadena nombre[50]
+    Registro FechaNacimiento fecha
+    Entero numeroJugador
+FinRegistro
+
+Registro Equipo =
+    Cadena nombre[30], estado[10]
+    Registro Jugador jugadores[10]
+    Entero numJugadores
+FinRegistro
+
+Entero EquipoL, EquipoJ, subOpc
+
+Inicio
+    equipoL <- 0, equipoJ <- 0
+    Registro Equipo libre[8], Registro Equipo junior[8]
+
+    Para i <-0 Hasta 7 Incrementar 1 Hacer
+        libre[i].categoria <- "libre" 
+        junior[i].categoria  <- "junior"  
+    FinPara
+
+    Repetir
+
+    Escribir("\n=== Menú ===\n")
+    Escribir("1. Registrar Jugador\n")
+    Escribir("2. Registrar Equipo\n")
+    Escribir("3. Eliminar Jugador\n")
+    Escribir("4. Eliminar Equipo\n")
+    Escribir("5. Mostrar Jugador\n")
+    Escribir("6. Mostrar Equipo\n")
+    Escribir("0. Salir\n")
+    Escribir("Ingrese una opción: ")
+    Leer(opcion)
+    Según Sea (opcion) 
+        caso 1:
+            subOpc <- validarCategoria()
+            Si ( subOpc = 1 ) Entonces
+                Escribir("Ingresa el número del equipo")
+                Leer(subOpc)
+                registrarJugador(libre[subOpc])
+            Sino
+            Si ( subOpc = 2 ) Entonces
+                Escribir("Ingresa el número del equipo")
+                Leer(subOpc)
+                registrarJugador(junior[subOpc])
+            FinSi
+        caso 2:
+            subOpc <- validarCategoria()
+            Si ( subOpc = 1 AND equipoL <= 7 ) Entonces
+                registrarEquipo(equipoL, libre[])
+            Sino
+            Si ( subOpc = 2 AND equipoJ <= 7 ) Entonces
+                registrarEquipo(equipoJ, junio[])
+            Sino
+                Escribir("Se ha alcanzado el limite de equipos")
+            FinSi
+        caso 3:
+            // Llamar a la función para eliminar jugador
+            break;
+        caso 4:
+            // Llamar a la función para eliminar equipo
+            break;
+        caso 5:
+            // Llamar a la función para mostrar jugador
+            break;
+        caso 6:
+            // Llamar a la función para mostrar equipo
+            break;
+        caso 0:
+            printf("Saliendo del programa. ¡Hasta luego!\n");
+            break;
+        caso contrario:
+            printf("Opción no válida. Intente nuevamente.\n");
+    FinSegún
+    Hasta (opcion <> 0);
+Fin
+
+
+//El organizador de un torneo relámpago de basquetbol necesita un software para administrar a los equipos y jugadores que participarán en el torneo. 
+//El torneo manejará 2 categorías: libre y junior. Para la categoría junior las edades admitidas van desde los 13 años hasta los 17, y para la categoría
+// libre a partir de los 18 años.   
+//
+//El torneo solo aceptará hasta 8 equipos por cada categoría y mínimo 4, donde cada equipo puede registrar a lo más 10 jugadores, mínimo 6. De cada 
+//jugador se solicitará su nombre completo (nombre, apellido materno y apellido paterno), fecha de nacimiento (día, mes y año) y número de jugador. 
+//La información del equipo consta del nombre y datos de los jugadores, el nombre del equipo y un estado, el cual podrá ser “completo” o “incompleto”
+//. El estado “completo” indica que el número de jugadores del equipo es al menos de 6 e “incompleto” indica que el número de jugadores es menor a 6. 
+//
+//El programa deberá validar que la edad del jugador corresponda a la categoría en la cual se está inscribiendo.  
+//Como suele suceder que los jugadores no se inscriban el mismo tiempo, el sistema debe permitir dar de alta a un equipo sin jugadores, y se debe poder
+// registrar jugador por jugador en diferentes tiempos. 
+//
+//El programa también debe permitir eliminar jugadores y eliminar equipos. Un equipo se podrá eliminar solo si el número de jugadores del equipo es cero. 
+//El programa debe permitir desplegar en pantalla los datos de los jugadores de un determinado equipo, o los datos de un jugador en específico. 
+//Todas estas operaciones (registrar jugador, registrar equipo, eliminar jugador, eliminar equipo, mostrar jugador, mostrar equipo) deberán permitirse
+// hasta que el usuario decida salir del programa. 
+//
+//
