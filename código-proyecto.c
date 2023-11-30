@@ -6,7 +6,8 @@ typedef char Cadena[255];
 typedef struct Players
 {
     Cadena nombre;
-    int edad;
+    Cadena apPaterno;
+    Cadena apPaterno;
     int nacimiento[3];
 } Jugadores;
 
@@ -16,11 +17,10 @@ typedef struct Teams
     Jugadores Players[10];
 } Equipos;
 
-Equipos Junior[8];
-Equipos Free[8];
-
 int main(int argc, char *argv[])
 {
+    Equipos Junior[8];
+    Equipos Free[8];
     int option = 0, opt = 0, equipos = 0;
     Cadena categories[2];
     strcpy(categories[0], "junior");
@@ -43,6 +43,16 @@ int main(int argc, char *argv[])
         case 1:
         {
             int contador = 0;
+            printf("\nEquipos de categoría Junior registrados:\n");
+            for (int i = 0; i < 8; i++)
+            {
+                if (Junior[i].nombre != "")
+                {
+                    contador++;
+                    printf("  %d.- %s\n", contador, Junior[i].nombre);
+                }
+            }
+
             while (opt != 1 || opt != 2)
             {
                 printf("Elija una categor�a:\n");
@@ -78,7 +88,7 @@ int main(int argc, char *argv[])
             }
             break;
         }
-        case 2:
+        case 2: // Registrar equipo
         {
             opt = 0;
             int jugadores = 0, birthInfo[3];
@@ -100,6 +110,21 @@ int main(int argc, char *argv[])
             bool salir = false;
             while (jugadores < 6 && salir != true && i < 10)
             {
+                if (jugadores > 5)
+                {
+                    int more = 0;
+                    while (more != 2)
+                    {
+                        printf("¿Quiere agregar otro jugador?\n1.- Sí\n2.- No\n");
+                        scanf(% d, &more);
+                        if (more == 2)
+                        {
+                            printf("Plantel dado de alta.\n");
+                            salir = true;
+                        }
+                    }
+                }
+
                 printf("Añade un jugador.");
 
                 printf("\nIndica el nombre: ");
@@ -122,20 +147,20 @@ int main(int argc, char *argv[])
 
                 printf("\nIndica el año de nacimiento (AAAA): ");
                 scanf("%d", &birthInfo[2]);
-            }
 
-            if (opt == 1)
-            {
-                limitAges[0] = 13;
-                limitAges[1] = 17
-                if (validateAges(birthInfo, limitAges)){
-
+                if (opt == 1 || opt == 2)
+                {
+                    registerPlayer(opt, birthInfo, limitAges);
+                    printf("\nJugador registrado exitosamente.\n");
                 }
+                i++;
             }
+            equipos++;
+            break;
         }
-        break;
         }
     }
+    printf("\n¡Hasta pronto, organizador!");
 }
 
 bool validateAge(int birth[3], int limits[2]) // recibo parámetros como arreglo: día, mes, año y límite inferior - superior de edades en años
@@ -222,13 +247,12 @@ bool validateAge(int birth[3], int limits[2]) // recibo parámetros como arreglo
                         }
                     }
                 }
-                else{
-                    if (limits[1]>=currentDate[2]-birth[2])
+                else
+                {
+                    if (limits[1] >= currentDate[2] - birth[2])
                     {
-                        
+                        accepted = true;
                     }
-                    
-                    accepted = true;
                 }
             }
         }
@@ -239,4 +263,44 @@ bool validateAge(int birth[3], int limits[2]) // recibo parámetros como arreglo
     }
 
     return accepted;
+}
+
+void registerPlayer(int opt, int birthInfo[3], int limitAges[2])
+{
+    switch (opt)
+    {
+    case 1:
+    {
+        limitAges[0] = 13;
+        limitAges[1] = 17;
+        if (validateAges(birthInfo, limitAges))
+        {
+            strcpy(Junior[equipos].Players[i].nombre, name[i][0]);
+            strcpy(Junior[equipos].Players[i].apPaterno, name[i][1]);
+            strcpy(Junior[equipos].Players[i].apMaterno, name[i][2]);
+            Junior[equipos].Players[i].nacimiento[0] = birthInfo[0];
+            Junior[equipos].Players[i].nacimiento[1] = birthInfo[1];
+            Junior[equipos].Players[i].nacimiento[2] = birthInfo[2];
+        }
+        break;
+    }
+    case 2:
+    {
+        limitAges[0] = 18;
+        limitAges[1] = 18;
+        if (validateAges(birthInfo, limitAges))
+        {
+            strcpy(Free[equipos].Players[i].nombre, name[i][0]);
+            strcpy(Free[equipos].Players[i].apPaterno, name[i][1]);
+            strcpy(Free[equipos].Players[i].apMaterno, name[i][2]);
+            Free[equipos].Players[i].nacimiento[0] = birthInfo[0];
+            Free[equipos].Players[i].nacimiento[1] = birthInfo[1];
+            Free[equipos].Players[i].nacimiento[2] = birthInfo[2];
+        }
+        break;
+    }
+
+    default:
+        printf("Error en datos para registro.");
+    }
 }
