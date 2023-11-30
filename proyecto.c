@@ -19,11 +19,11 @@ Equipos Junior[8];
 Equipos Free[8];
 
 int main(int argc, char *argv[])
-{
+{	
 	int option = 0, opt = 0;
 	Cadena categories[2];
-	categories[0] = "junior";
-	categories[1] = "libre";
+	strcpy(categories[0], "junior");
+	strcpy(categories[1], "libre");
 	
 	while (option != 10)
 	{
@@ -53,14 +53,16 @@ int main(int argc, char *argv[])
 				for(int i=0; i<8; i++){
 					if(Junior[i].nombre != ""){
 						contador++;
-						printf("%d.- %s", contador, Junior.[i].nombre);
+						printf("  %d.- %s\n", contador, Junior[i].nombre);
 					}
 				}
+				printf("Elige un equipo: ");
+				scanf(%d, &opt);
 			}else{
 				for(int i=0; i<8; i++){
 					if(Junior[i].nombre != ""){
 						contador++;
-						printf("%d.- %s", contador, Junior.[i].nombre)
+						printf("%d.- %s", contador, Junior[i].nombre);
 					}
 				}
 			}
