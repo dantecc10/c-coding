@@ -129,7 +129,7 @@ int main(int argc, char *argv[])
                 limitAges[0] = 13;
                 limitAges[1] = 17
                 if (validateAges(birthInfo, limitAges)){
-                    
+
                 }
             }
         }
@@ -138,7 +138,7 @@ int main(int argc, char *argv[])
     }
 }
 
-bool validateAge(int birth[3], int limits[2]) // recibo parámetros como arreglo
+bool validateAge(int birth[3], int limits[2]) // recibo parámetros como arreglo: día, mes, año y límite inferior - superior de edades en años
 {
     bool accepted = false;
     int currentDate[3]; // Establezco fecha de comparación de edad en 29/11/2023
