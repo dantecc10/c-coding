@@ -127,7 +127,10 @@ int main(int argc, char *argv[])
             if (opt == 1)
             {
                 limitAges[0] = 13;
-                limitAges[1] = 17 if (validateAges(birthInfo, ))
+                limitAges[1] = 17
+                if (validateAges(birthInfo, limitAges)){
+                    
+                }
             }
         }
         break;
@@ -191,6 +194,42 @@ bool validateAge(int birth[3], int limits[2]) // recibo parámetros como arreglo
             if (currentDate[2] - birth[2] < limits[1] && currentDate[2] - birth[2] > limits[0])
             {
                 accepted = true;
+            }
+            else
+            {
+                if (currentDate[2] - birth[2] = limits[0])
+                {
+                    if (birth[1] < currentDate[1])
+                    {
+                        accepted = true;
+                    }
+                    else
+                    {
+                        if (birth[1] > currentDate[1])
+                        {
+                            accepted = false;
+                        }
+                        else
+                        {
+                            if (birth[0] <= currentDate[0])
+                            {
+                                accepted = true;
+                            }
+                            else
+                            {
+                                accepted = false;
+                            }
+                        }
+                    }
+                }
+                else{
+                    if (limits[1]>=currentDate[2]-birth[2])
+                    {
+                        
+                    }
+                    
+                    accepted = true;
+                }
             }
         }
         else
