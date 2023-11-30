@@ -7,7 +7,7 @@ typedef struct Players
 {
     Cadena nombre;
     Cadena apPaterno;
-    Cadena apPaterno;
+    Cadena apMaterno;
     int nacimiento[3];
 } Jugadores;
 
@@ -43,51 +43,28 @@ int main(int argc, char *argv[])
         case 1:
         {
             int contador = 0;
-            printf("\nEquipos de categoría Junior registrados:\n");
+            printf("\nEquipos de categoria Junior registrados:\n");
             for (int i = 0; i < 8; i++)
             {
                 if (Junior[i].nombre != "")
                 {
                     contador++;
-                    printf("  %d.- %s\n", contador, Junior[i].nombre);
+                    printf("  %d.- %s\n", contador + 1, Junior[i].nombre);
                 }
             }
-
-            while (opt != 1 || opt != 2)
+            contador = 0;
+            printf("\nEquipos de categoria Libre registrados:\n");
+            for (int i = 0; i < 8; i++)
             {
-                printf("Elija una categor�a:\n");
-                printf("1.- Junior\n");
-                printf("2.- Libre\n");
-                scanf("%d", &opt);
-            }
-            printf("Haz elegido la categor�a %s, los equipos inscritos son:\n", categories[opt - 1]);
-            if (opt = 1)
-            {
-
-                for (int i = 0; i < 8; i++)
+                if (Free[i].nombre != "")
                 {
-                    if (Junior[i].nombre != "")
-                    {
-                        contador++;
-                        printf("  %d.- %s\n", contador, Junior[i].nombre);
-                    }
-                }
-                printf("Elige un equipo: ");
-                scanf(% d, &opt);
-            }
-            else
-            {
-                for (int i = 0; i < 8; i++)
-                {
-                    if (Junior[i].nombre != "")
-                    {
-                        contador++;
-                        printf("%d.- %s", contador, Junior[i].nombre);
-                    }
+                    contador++;
+                    printf("  %d.- %s\n", contador + 1, Free[i].nombre);
                 }
             }
             break;
         }
+
         case 2: // Registrar equipo
         {
             opt = 0;
@@ -96,19 +73,19 @@ int main(int argc, char *argv[])
 
             while (opt != 1 || opt != 2)
             {
-                printf("Elija una categor�a:\n");
+                printf("Elija una categoria:\n");
                 printf("1.- Junior\n");
                 printf("2.- Libre\n");
                 scanf("%d", &opt);
             }
-            printf("Haz elegido la categor�a %s.\n", categories[opt - 1]);
+            printf("Haz elegido la categoria %s.\n", categories[opt - 1]);
 
             printf("Escribe el nombre del equipo:\n");
-            scanf(% s, &team_name);
+            scanf("%s", &team_name);
             printf("\n");
             int i = 0, limitAges[2];
-            bool salir = false;
-            while (jugadores < 6 && salir != true && i < 10)
+            int salir = 0;
+            while (jugadores < 6 && salir != 1 && i < 10)
             {
                 if (jugadores > 5)
                 {
@@ -163,9 +140,9 @@ int main(int argc, char *argv[])
     printf("\n¡Hasta pronto, organizador!");
 }
 
-bool validateAge(int birth[3], int limits[2]) // recibo parámetros como arreglo: día, mes, año y límite inferior - superior de edades en años
+int validateAge(int birth[3], int limits[2]) // recibo parámetros como arreglo: día, mes, año y límite inferior - superior de edades en años
 {
-    bool accepted = false;
+    int accepted = 0;
     int currentDate[3]; // Establezco fecha de comparación de edad en 29/11/2023
     currentDate[0] = 29;
     currentDate[1] = 11;
@@ -180,7 +157,7 @@ bool validateAge(int birth[3], int limits[2]) // recibo parámetros como arreglo
                 {
                     if (birth[1] > currentDate[1])
                     {
-                        accepted = false;
+                        accepted = 0;
                     }
                     else
                     {
@@ -188,28 +165,28 @@ bool validateAge(int birth[3], int limits[2]) // recibo parámetros como arreglo
                         {
                             if (birth[0] <= currentDate[0])
                             {
-                                accepted = true;
+                                accepted = 1;
                             }
                             else
                             {
-                                accepted = true;
+                                accepted = 0;
                             }
                         }
                     }
                 }
                 else
                 {
-                    accepted = true;
+                    accepted = 1;
                 }
             }
             else
             {
-                accepted = false;
+                accepted = 0;
             }
         }
         else
         {
-            accepted = false;
+            accepted = 0;
         }
     }
     else
@@ -218,7 +195,7 @@ bool validateAge(int birth[3], int limits[2]) // recibo parámetros como arreglo
         {
             if (currentDate[2] - birth[2] < limits[1] && currentDate[2] - birth[2] > limits[0])
             {
-                accepted = true;
+                accepted = 1;
             }
             else
             {
@@ -226,23 +203,23 @@ bool validateAge(int birth[3], int limits[2]) // recibo parámetros como arreglo
                 {
                     if (birth[1] < currentDate[1])
                     {
-                        accepted = true;
+                        accepted = 1;
                     }
                     else
                     {
                         if (birth[1] > currentDate[1])
                         {
-                            accepted = false;
+                            accepted = 0;
                         }
                         else
                         {
                             if (birth[0] <= currentDate[0])
                             {
-                                accepted = true;
+                                accepted = 1;
                             }
                             else
                             {
-                                accepted = false;
+                                accepted = 0;
                             }
                         }
                     }
@@ -251,14 +228,14 @@ bool validateAge(int birth[3], int limits[2]) // recibo parámetros como arreglo
                 {
                     if (limits[1] >= currentDate[2] - birth[2])
                     {
-                        accepted = true;
+                        accepted = 1;
                     }
                 }
             }
         }
         else
         {
-            accepted = false;
+            accepted = 1;
         }
     }
 
@@ -273,7 +250,7 @@ void registerPlayer(int opt, int birthInfo[3], int limitAges[2])
     {
         limitAges[0] = 13;
         limitAges[1] = 17;
-        if (validateAges(birthInfo, limitAges))
+        if (validateAges(birthInfo, limitAges) == 1)
         {
             strcpy(Junior[equipos].Players[i].nombre, name[i][0]);
             strcpy(Junior[equipos].Players[i].apPaterno, name[i][1]);
@@ -288,7 +265,7 @@ void registerPlayer(int opt, int birthInfo[3], int limitAges[2])
     {
         limitAges[0] = 18;
         limitAges[1] = 18;
-        if (validateAges(birthInfo, limitAges))
+        if (validateAges(birthInfo, limitAges) == 1)
         {
             strcpy(Free[equipos].Players[i].nombre, name[i][0]);
             strcpy(Free[equipos].Players[i].apPaterno, name[i][1]);
